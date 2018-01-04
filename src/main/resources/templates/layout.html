@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"
+        xmlns:th = "http://thymeleaf.org"
+        xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>HelpDesk - SpringApp</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body>
+    <div class="container"></div>
+    <div class="row">
+        <th:block layout:fragment="content"></th:block>
+        <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+    </div>
+    <th:block layout:replace="fragments/header"></th:block>
+</body>
+</html>
