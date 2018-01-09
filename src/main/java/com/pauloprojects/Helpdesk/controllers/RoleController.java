@@ -1,15 +1,25 @@
 package com.pauloprojects.Helpdesk.controllers;
 
+import com.pauloprojects.Helpdesk.models.Role;
+import com.pauloprojects.Helpdesk.services.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/roles")
 public class RoleController {
+
+    @Autowired
+    private RoleService roleService;
+
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
     @GetMapping
     public String index (Model model) {
@@ -18,13 +28,21 @@ public class RoleController {
 
     @GetMapping("/new")
     public String create (Model model) {
+        model.addAttribute("role", new Role());
         return "roles/create";
     }
 
     @PostMapping
-    public String save (Model model) {
-        return null;
+    public String save(@Valid @ModelAttribute("role") Role role, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "roles/create";
+        }
+
+        Role roleCreated = this.roleService.create(role);
+
+        return "redirect:/roles";
     }
+
 
     @DeleteMapping
     public String delete (Model model) {
