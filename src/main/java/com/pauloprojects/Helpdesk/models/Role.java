@@ -15,16 +15,16 @@ public class Role {
 
     @Column
     @NotEmpty(message = "Can not be empty")
-    private String role;
+    private String name;
 
     public Role() {}
 
-    public Role (String role) {
-        this.role = role;
+    public Role (String name) {
+        this.name = name;
     }
-    public Role(Long id, String role) {
+    public Role(Long id, String name) {
         this.id = id;
-        this.role = role;
+        this.name = name;
     }
 
     public Long getId() {
@@ -35,11 +35,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 }
