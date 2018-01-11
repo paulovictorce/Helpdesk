@@ -23,6 +23,7 @@ public class RoleController {
 
     @GetMapping
     public String index (Model model) {
+        model.addAttribute("list", this.roleService.findAll());
         return "roles/index";
     }
 
@@ -44,8 +45,9 @@ public class RoleController {
     }
 
 
-    @DeleteMapping
-    public String delete (Model model) {
-        return null;
+    @DeleteMapping("{id}")
+    public String delete (@PathVariable("id") Long id, Model model) {
+        this.roleService.delete(id);
+        return "redirect:/roles";
     }
 }
