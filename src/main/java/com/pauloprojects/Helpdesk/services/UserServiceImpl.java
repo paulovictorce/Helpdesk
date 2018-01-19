@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return this.userRepository.findAll();
     }
 
     @Override
@@ -25,11 +25,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean delete(Long id) {
+        User user = findById(id);
+        if(user != null) {
+            this.userRepository.delete(user);
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean edit(Long id, User user) {
         return false;
+    }
+
+    private User findById(Long id) {
+        return this.userRepository.findOne(id);
     }
 }

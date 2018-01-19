@@ -5,17 +5,28 @@
       layout:decorator="layout">
 
     <th:block layout:fragment="content">
+        <div class="col-xs-12 col-md-12" style="margin-bottom: 10px">
+            <a href="/users/new" class="btn btn-success">Create</a>
+        </div>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Paulo Victor</td>
-                <td>bd.paulovictor@gmail.com</td>
+            <tr th:each = "user : ${list}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <form th:action="@{/users/{id}(id= ${user.id})}" th:method = "delete">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
