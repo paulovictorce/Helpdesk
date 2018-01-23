@@ -33,8 +33,10 @@ public class UserController {
         return "users/create";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
+        User user = this.userService.show(id);
+        model.addAttribute("user", user);
         return "users/edit";
     }
 
@@ -52,5 +54,15 @@ public class UserController {
     public String delete (@PathVariable("id")Long id) {
         this.userService.delete(id);
         return "redirect:/users";
+    }
+
+    @PutMapping("{id}")
+    public String update (@PathVariable("id")Long id, @Valid @ModelAttribute("user")User user, Model model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "users/edit";
+        }
+
+        this.userService.update(id, user);
+        return  "redirect:/users";
     }
 }
