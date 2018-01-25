@@ -3,6 +3,7 @@ package com.pauloprojects.Helpdesk.services;
 import com.pauloprojects.Helpdesk.models.User;
 import com.pauloprojects.Helpdesk.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
     @Override
     public List<User> findAll() {
         return this.userRepository.findAll();
@@ -20,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
     }
 
@@ -41,7 +51,7 @@ public class UserServiceImpl implements UserService {
             userExists.setName(user.getName());
             userExists.setLastName(user.getLastName());
             userExists.setEmail(user.getEmail());
-            userExists.setPassword(user.getPassword());
+            userExists.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
             userExists.setActive(user.isActive());
 
             this.userRepository.save(userExists);
