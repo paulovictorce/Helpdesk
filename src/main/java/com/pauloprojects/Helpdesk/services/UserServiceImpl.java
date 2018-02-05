@@ -1,11 +1,15 @@
 package com.pauloprojects.Helpdesk.services;
 
+import com.pauloprojects.Helpdesk.models.Role;
 import com.pauloprojects.Helpdesk.models.User;
+import com.pauloprojects.Helpdesk.repositories.RolesRepository;
 import com.pauloprojects.Helpdesk.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -17,9 +21,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    @Autowired
+    private RolesRepository roleRepository;
+
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RolesRepository roleRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -30,6 +38,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        Role role = this.roleRepository.findByName("USER");
+        user.setRoles(new HashSet<Role>(Arrays.asList(role)));
         return this.userRepository.save(user);
     }
 
