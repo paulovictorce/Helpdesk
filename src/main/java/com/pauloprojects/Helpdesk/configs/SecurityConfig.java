@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?errors=true")
-                .defaultSuccessUrl("/users")
+                .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .jdbcAuthentication()
                 .usersByUsernameQuery(" select usr.email, usr.password, usr.active from users usr where usr.email = ? and usr.active = 1")
                 .authoritiesByUsernameQuery(" select usr.email, rl.name from users usr " +
-                        " inner join users_roles usrr on (usr.id = usrr.user_id) " +
+                        " inner join user_roles usrr on (usr.id = usrr.user_id) " +
                         " inner join roles rl on (usrr.role_id = rl.id)" +
                         " where usr.email = ? " +
                         " and   usr.active = 1")
